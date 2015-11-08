@@ -8,9 +8,10 @@ import os
 import datetime
 from redis import StrictRedis as Redis
 
+subscriber = 'first_subscriber'
+
 
 def _subscribe(channel):
-
     while True:
         try:
             msg = r.blpop(channel)
@@ -21,14 +22,13 @@ def _subscribe(channel):
 
 
 def _fork_and_subscribe(channel):
-
     r.sadd(channel, 'first_subscriber')
 
     child_pid = os.fork()
     if not child_pid:
         try:
             print("Processing work since {}".format(datetime.datetime.utcnow()))
-            _subscribe("{}:first_subscriber".format(channel))
+            _subscribe("{channel}:{subscriber}".format(channel=channel, subscriber=subscriber))
         except Exception, e:
             print(e)
             sys.exit(1)
@@ -36,6 +36,7 @@ def _fork_and_subscribe(channel):
     else:
         print("Forked {} at {}".format(child_pid, datetime.datetime.utcnow()))
         # os.waitpid(child_pid, 0)
+
 
 if __name__ == "__main__":
     r = Redis(host="localhost", port=6379, db=0)
