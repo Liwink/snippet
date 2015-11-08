@@ -29,12 +29,10 @@ def _fork_and_subscribe(channel):
             _subscribe(channel)
         except Exception, e:
             print(e)
-            # TODO: 参数的意义？
             sys.exit(1)
         sys.exit(0)
     else:
         print("Forked {} at {}".format(child_pid, time.time()))
-        # TODO: 这是干嘛
         # os.waitpid(child_pid, 0)
 
 if __name__ == "__main__":
