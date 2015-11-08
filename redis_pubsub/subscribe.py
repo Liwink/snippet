@@ -14,7 +14,7 @@ def _subscribe(channel):
 
     while True:
         try:
-            msg = r.rpop(channel)
+            msg = r.blpop(channel)
         except Exception, e:
             msg = e
         if msg:
