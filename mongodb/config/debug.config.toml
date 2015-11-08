@@ -1,0 +1,11 @@
+# 数据存储数据库
+[mongodb_openplay]
+host = "localhost"
+port = 27017
+db = "op"
+
+[mongodb_extra]
+host = "localhost"
+port = 27017
+db = "op_extra"
+
