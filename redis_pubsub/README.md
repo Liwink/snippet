@@ -28,3 +28,11 @@ publish 时将数据推到 subscribe 对应的 redis 队列中。
 
 30+% 的CPU使用率，直接降到0
 
+### 新的结构
+
+现在有三个模块：
+
+* channel_daemon：轮询 channel，每个订阅者获取信息
+* subscribe：channel 中增加订阅者
+* publish：向 channel 中每个订阅者发送消息
+* un_subscribe: 取消订阅
