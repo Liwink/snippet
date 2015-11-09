@@ -18,11 +18,11 @@ def _subscribe(channel):
         except Exception, e:
             msg = e
         if msg:
-            print("channel: {} \nmessage: {}".format(channel, msg))
+            print("channel: {} \nmessage: {}".format(channel, msg[1]))
 
 
 def _fork_and_subscribe(channel):
-    r.sadd(channel, 'first_subscriber')
+    r.sadd(channel, subscriber)
 
     child_pid = os.fork()
     if not child_pid:
@@ -40,7 +40,8 @@ def _fork_and_subscribe(channel):
 
 if __name__ == "__main__":
     r = Redis(host="localhost", port=6379, db=0)
-    print(sys.argv[1:])
-    for channel in sys.argv[1:]:
+    subscriber = sys.argv[1]
+    print(sys.argv[2:])
+    for channel in sys.argv[2:]:
         print(channel)
         _fork_and_subscribe(channel)
