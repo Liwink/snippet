@@ -1,15 +1,15 @@
 用 redis 实现 pubsub
 ===
 
-### redis 自带 pubsub 不足
+## redis 自带 pubsub 不足
 1. 会有数据丢失
 2. 并不是串行（？）
 ...
 
-### redis 实现
+## redis 实现
 publish 时将数据推到 subscribe 对应的 redis 队列中。
 
-### 问题
+## 问题
 
 #### 订阅中使用 `while` 循环监听时，只能实现一个订阅（进程被锁死
 
@@ -28,7 +28,8 @@ publish 时将数据推到 subscribe 对应的 redis 队列中。
 
 30+% 的CPU使用率，直接降到0
 
-### 新的结构
+
+## 新的结构
 
 现在有三个模块：
 
@@ -36,3 +37,17 @@ publish 时将数据推到 subscribe 对应的 redis 队列中。
 * subscribe：channel 中增加订阅者
 * publish：向 channel 中每个订阅者发送消息
 * un_subscribe: 取消订阅
+
+#### 阻塞式弹出 BLPOP
+
+`r.blpop(keys, timeout)`
+
+1. `keys` 可以是队列，由先后顺序进行 pop
+
+2. 阻塞式的意义：
+> 如果所有给定key都不存在或包含空列表，那么BLPOP命令将阻塞连接，直到等待超时，或有另一个客户端对给定key的任意一个执行LPUSH或RPUSH命令为止。
+
+3. `timeout`，阻塞超时时间，当为0的时候表示阻塞时间无限期延长。
+
+[REDIS BLPOP](https://redis.readthedocs.org/en/2.4/list.html#blpop)
+
