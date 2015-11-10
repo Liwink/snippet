@@ -6,7 +6,7 @@ __author__ = 'Liwink'
 from redis import Redis
 from rq import Queue
 
-from task import print_job
+# from task import print_job
 
 import sys
 
@@ -22,4 +22,5 @@ def enqueue(job, value):
 
 
 if __name__ == "__main__":
-    enqueue(print_job, sys.argv[1])
+    # enqueue(print_job, sys.argv[1])
+    enqueue('task.print_job', sys.argv[1])
