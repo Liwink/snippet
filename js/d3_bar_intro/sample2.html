@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<svg class="chart"></svg>
+
+<style>
+
+var data = [1, 6, 7]
+
+d3.select(".chart")
+  .selectAll("div")
+    .data(data)
+  .enter().append("div")
+    .style("width", function(d) { return d * 10 + "px"; })
+    .text(function(d) { return d; });
+
+</style>
