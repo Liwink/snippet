@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
 <style>
 
 .chart rect {
@@ -28,7 +30,12 @@
 }
 
 </style>
-<svg class="chart"></svg>
+<div class="row">
+  <div id="main" class="col-xs-12 col-md-8"><svg class="chart"></svg></div>
+  <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+  
+</div>
+
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
 
@@ -50,7 +57,7 @@ function generate_bar(data) {
       return d.successful_pass
   });
 
-  var w = document.body.offsetWidth
+  var w = document.getElementById("main").offsetWidth
 
   var margin = {top: 20, right: 30, bottom: 60, left: 40},
       width = w - margin.left - margin.right,
