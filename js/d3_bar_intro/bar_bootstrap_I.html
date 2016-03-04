@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
 .chart rect {
@@ -39,12 +39,12 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
 
-
-
 function httpGetAsync(theUrl, callback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
-    callback(xmlHttp.responseText)
+    if (xmlHttp.readyState==4) {
+      callback(xmlHttp.responseText)
+    }
   }
   xmlHttp.open("GET", theUrl, true);
   xmlHttp.send(null)
@@ -76,11 +76,6 @@ function generate_bar(data) {
       .scale(x)
       .orient("bottom");
 
-  // var yAxis = d3.svg.axis()
-  //     .scale(y)
-  //     .orient("left")
-  //     .ticks(10);
-
   var chart = d3.select(".chart")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -97,10 +92,6 @@ function generate_bar(data) {
       .style("text-anchor", "start")
       .attr("dy", ".70em");
 
-  // chart.append("g")
-  //     .attr("class", "y axis")
-  //     .attr("transform", "translate(-3, 0)")
-  //     .call(yAxis);
 
   var bar = chart.selectAll(".bar")
       .data(data)
@@ -111,12 +102,18 @@ function generate_bar(data) {
       .attr("height", function(d) { return height - y(d.successful_pass); })
       .attr("width", barWidth - 1);
 
-  // chart.append("text")
-  //     .attr("class", "x label")
-  //     .attr("text-anchor", "end")
-  //     .attr("x", width)
-  //     .attr("y", height + 6)
-  //     .text("team name")
+
+  function updateWindow(){
+      w = document.getElementById("main").offsetWidth;
+      width = w - margin.left - margin.right;
+      barWidth = width / data.length;
+      chart = d3.select(".chart")
+        .attr("width", width + margin.left + margin.right)
+      d3.selectAll("rect")
+        .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+        .attr("width", barWidth - 1);
+  }
+  window.onresize = updateWindow;
 
 }
 
