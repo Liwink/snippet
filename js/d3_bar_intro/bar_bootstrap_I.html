@@ -8,6 +8,11 @@
   fill: steelblue;
 }
 
+.middle {
+  width: 800px;
+  margin: auto;
+}
+
 /*.chart text {
   fill: white;
   font: 10px sans-serif;
@@ -30,11 +35,11 @@
 }
 
 </style>
-<div id="main" class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-6"><svg class="chart shot_on_target"></svg></div>
-  <div class="col-md-3"></div>
+
+<div class="middle">
+  <svg class="chart shot_on_target"></svg>
 </div>
+
 <div class="row">
   <div class="col-md-6"><svg class="chart successful_pass"></svg></div>
 </div>
@@ -77,7 +82,7 @@ function generate_chart(data) {
     });
 
     // var w = document.getElementById("main").offsetWidth
-    var w = document.body.offsetWidth * 0.713
+    var w = document.getElementsByClassName("middle")[0].offsetWidth
 
     var margin = {top: 20, right: 30, bottom: 60, left: 40},
         width = w - margin.left - margin.right,
