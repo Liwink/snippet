@@ -30,10 +30,23 @@
 }
 
 </style>
+<div id="main" class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6"><svg class="chart shot_on_target"></svg></div>
+  <div class="col-md-3"></div>
+</div>
 <div class="row">
-  <div id="main" class="col-xs-12 col-md-8"><svg class="chart"></svg></div>
-  <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-  
+  <div class="col-md-6"><svg class="chart successful_pass"></svg></div>
+</div>
+<div class="row">
+  <div class="col-md-6"><svg class="chart ctrl_ratio"></svg></div>
+</div>
+<div class="row">
+  <div class="col-md-6"><svg class="chart tackle_won"></svg></div>
+</div>
+<div class="row">
+  <div><svg class="chart save"></svg></div>
+</div>
 </div>
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -43,81 +56,90 @@ function httpGetAsync(theUrl, callback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
     if (xmlHttp.readyState==4) {
-      callback(xmlHttp.responseText)
+      callback(JSON.parse(xmlHttp.responseText))
     }
   }
   xmlHttp.open("GET", theUrl, true);
   xmlHttp.send(null)
 }
 
-function generate_bar(data) {
-  var data = JSON.parse(data);
+function generate_chart(data) {
 
-  var maxCount = d3.max(data, function(d, i) {
-      return d.successful_pass
-  });
+  generate_bar(data, "shot_on_target")
+  generate_bar(data, "successful_pass")
+  generate_bar(data, "ctrl_ratio")
+  generate_bar(data, "tackle_won")
+  generate_bar(data, "save")
 
-  var w = document.getElementById("main").offsetWidth
+  function generate_bar(data, bar_type) {
+    var maxCount = d3.max(data, function(d, i) {
+        return d[bar_type]
+    });
 
-  var margin = {top: 20, right: 30, bottom: 60, left: 40},
-      width = w - margin.left - margin.right,
-      height = 450 - margin.top - margin.bottom,
-      barWidth = width / data.length;
+    // var w = document.getElementById("main").offsetWidth
+    var w = document.body.offsetWidth * 0.713
 
-  var x = d3.scale.ordinal()
-      .domain(data.map(function(d) { return d.team_name; }))
-      .rangeRoundBands([0, width]);
+    var margin = {top: 20, right: 30, bottom: 60, left: 40},
+        width = w - margin.left - margin.right,
+        height = width * 0.25
+        barWidth = width / data.length;
 
-  var y = d3.scale.linear()
-      .domain([maxCount, 0])
-      .range([0, height]);
+    var x = d3.scale.ordinal()
+        .domain(data.map(function(d) { return d.team_name; }))
+        .rangeRoundBands([0, width]);
 
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+    var y = d3.scale.linear()
+        .domain([maxCount, 0])
+        .range([0, height]);
 
-  var chart = d3.select(".chart")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
 
-  chart.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      // .attr("transform", "rotate(90)")
-      .call(xAxis)
-    .selectAll("text")
-      .attr("transform", "rotate(45)")
-      .style("text-anchor", "start")
-      .attr("dy", ".70em");
-
-
-  var bar = chart.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-      // .attr("x", function(d) { return x(d.team_name); })
-      .attr("y", function(d) { return y(d.successful_pass); })
-      .attr("height", function(d) { return height - y(d.successful_pass); })
-      .attr("width", barWidth - 1);
-
-
-  function updateWindow(){
-      w = document.getElementById("main").offsetWidth;
-      width = w - margin.left - margin.right;
-      barWidth = width / data.length;
-      chart = d3.select(".chart")
+    var chart = d3.select("." + bar_type)
         .attr("width", width + margin.left + margin.right)
-      d3.selectAll("rect")
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+
+    chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        // .attr("transform", "rotate(90)")
+        .call(xAxis)
+      .selectAll("text")
+        .attr("transform", "rotate(45)")
+        .style("text-anchor", "start")
+        .attr("dy", ".70em");
+
+
+    var bar = chart.selectAll(".bar")
+        .data(data)
+      .enter().append("rect")
         .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-        .attr("width", barWidth - 1);
+        // .attr("x", function(d) { return x(d.team_name); })
+        .attr("y", function(d) { return y(d[bar_type]); })
+        .attr("height", function(d) { return height - y(d[bar_type]); })
+        .attr("width", barWidth * 0.3);
+
+
+    function updateWindow(){
+        w = document.getElementById("main").offsetWidth;
+        width = w - margin.left - margin.right;
+        barWidth = width / data.length;
+        chart = d3.select("." + bar_type)
+          .attr("width", width + margin.left + margin.right)
+        d3.selectAll("rect")
+          .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+          .attr("width", barWidth * 0.3);
+        // x.rangeRoundBands([0, width]);
+    }
+    window.onresize = updateWindow;
   }
-  window.onresize = updateWindow;
 
 }
 
-httpGetAsync("/v1/visualization/564446bfc8f97c48711e1d78", generate_bar)
+httpGetAsync("/v1/visualization/564446bfc8f97c48711e1d78", generate_chart)
 
 </script>
 
