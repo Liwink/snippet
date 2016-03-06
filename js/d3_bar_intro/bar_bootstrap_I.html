@@ -301,6 +301,39 @@ function generate_chart(data) {
           .attr("dy", "1.2em")
           .text(function(d) { return d[stat_type] });
     }
+
+    // Draw legend
+    var legendRectSize = 18,
+        legendSpacing  = 4,
+        gapBetweenGroups = 10,
+        spaceForLabels   = 150,
+        spaceForLegend   = 150;
+
+    var legend = chart.selectAll('.legend')
+        .data(["d", "p"])
+        .enter()
+        .append('g')
+        .attr('transform', function (d, i) {
+            var height = legendRectSize + legendSpacing;
+            var offset = -gapBetweenGroups/2;
+            var horz = width - spaceForLegend;
+            var vert = i * height - offset;
+            return 'translate(' + horz + ',' + vert + ')';
+        });
+
+    legend.append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', function (d, i) { return color(i); })
+        .style('stroke', function (d, i) { return color(i); });
+
+    legend.append('text')
+        .attr('class', 'legend')
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', legendRectSize - legendSpacing)
+        .text(function (d) { return d; });
+
+    
     
 
 
