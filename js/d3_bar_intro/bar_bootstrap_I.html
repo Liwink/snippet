@@ -67,14 +67,8 @@ blockquote {
   color: #CB1B45;
 }
 
-/*.chart text {
-  fill: white;
-  font: 10px sans-serif;
-  text-anchor: end;
-}*/
-
 .axis text {
-  font: 9px sans-serif;
+  font: 10px sans-serif;
   fill: black;
 }
 
@@ -175,6 +169,24 @@ function generate_chart(data) {
     data.sort(function(a, b) {
         return parseFloat(b[bar_type]) - parseFloat(a[bar_type]);
     });
+
+    switch (bar_type) {
+      case ("shot_on_target"):
+        data.sort(function(a, b) {
+            return parseFloat(b["goal"]) - parseFloat(a["goal"]);
+        });
+        break;
+      case ("save"):
+        data.sort(function(a, b) {
+            return parseFloat(-b["goal_against"]) + parseFloat(a["goal_against"]);
+        });
+        break;
+      default:
+        data.sort(function(a, b) {
+            return parseFloat(b[bar_type]) - parseFloat(a[bar_type]);
+        });
+        break;
+    }
 
     var maxCount = d3.max(data, function(d, i) {
         return d[bar_type]
