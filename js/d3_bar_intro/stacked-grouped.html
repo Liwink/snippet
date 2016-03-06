@@ -31,7 +31,7 @@ form {
   <label><input type="radio" name="mode" value="grouped"> Grouped</label>
   <label><input type="radio" name="mode" value="stacked" checked> Stacked</label>
 </form>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="//d3js.org/d3.v3.min.js"></script>
 <script>
 
 var n = 4, // number of layers
@@ -108,12 +108,13 @@ function change() {
 function transitionGrouped() {
   y.domain([0, yGroupMax]);
 
-  rect.transition()
-      .duration(500)
-      .delay(function(d, i) { return i * 10; })
-      .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
+  rect.attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
+      // .transition()
+      // .duration(500)
+      // .delay(function(d, i) { return i * 10; })
+      // .attr("x", function(d, i, j) { return x(d.x) + x.rangeBand() / n * j; })
       .attr("width", x.rangeBand() / n)
-    .transition()
+    // .transition()
       .attr("y", function(d) { return y(d.y); })
       .attr("height", function(d) { return height - y(d.y); });
 }
@@ -121,12 +122,13 @@ function transitionGrouped() {
 function transitionStacked() {
   y.domain([0, yStackMax]);
 
-  rect.transition()
-      .duration(500)
-      .delay(function(d, i) { return i * 10; })
-      .attr("y", function(d) { return y(d.y0 + d.y); })
+  rect.attr("y", function(d) { return y(d.y0 + d.y); })
+      // .transition()
+      // .duration(500)
+      // .delay(function(d, i) { return i * 10; })
+      // .attr("y", function(d) { return y(d.y0 + d.y); })
       .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
-    .transition()
+    // .transition()
       .attr("x", function(d) { return x(d.x); })
       .attr("width", x.rangeBand());
 }
@@ -150,3 +152,4 @@ function bumpLayer(n, o) {
   return a.map(function(d, i) { return {x: i, y: Math.max(0, d)}; });
 }
 
+</script>

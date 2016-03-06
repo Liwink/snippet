@@ -67,8 +67,6 @@ blockquote {
   color: #CB1B45;
 }
 
-
-
 /*.chart text {
   fill: white;
   font: 10px sans-serif;
@@ -77,6 +75,13 @@ blockquote {
 
 .axis text {
   font: 9px sans-serif;
+}
+
+text {
+  font: 13px Open Sans;
+  margin: auto;
+  color: white;
+  fill: white;
 }
 
 .axis path,
@@ -178,9 +183,9 @@ function generate_chart(data) {
     // var w = document.getElementById("main").offsetWidth
     var w = document.getElementsByClassName("card")[0].offsetWidth
 
-    var margin = {top: 00, right: 60, bottom: 60, left: 60},
+    var margin = {top: 12, right: 60, bottom: 60, left: 60},
         width = w - margin.left - margin.right,
-        height = width * 0.25
+        height = width * 0.33
         barWidth = width / data.length;
 
     var x = d3.scale.ordinal()
@@ -214,12 +219,29 @@ function generate_chart(data) {
 
     var bar = chart.selectAll(".bar")
         .data(data)
-      .enter().append("rect")
-        .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+      .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(" + (i + 0.17) * barWidth + ",0)"; })
+      .attr("width", barWidth)
+      // .append("group")
+
+    bar.append("rect")
+        // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
         // .attr("x", function(d) { return x(d.team_name); })
-        .attr("y", function(d) { console.log(y(d[bar_type])); return y(d[bar_type]); })
+        .attr("y", function(d) { return y(d[bar_type]); })
         .attr("height", function(d) { return height - y(d[bar_type]); })
-        .attr("width", barWidth * 0.67);
+        .attr("width", barWidth * 0.66);
+
+    bar.append("text")
+        // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+        // .attr("x", function(d) { return x(d.team_name); })
+        .attr("y", function(d) { return y(d[bar_type]); })
+        .attr("transform", function(d, i) { return "translate(" + 0.33 * barWidth + ",0)"; })
+        .attr("height", function(d) { return height - y(d[bar_type]) + 9; })
+        .attr("width", barWidth)
+        .style("text-anchor", "middle")
+        .attr("dy", "1.2em")
+        .text(function(d) { return d[bar_type] });
+
 
 
     // function updateWindow(){
