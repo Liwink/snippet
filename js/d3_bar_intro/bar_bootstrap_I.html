@@ -53,7 +53,7 @@ blockquote {
 }
 
 .card {
-  max-width: 800px;
+  max-width: 1000px;
   margin: .1rem auto 1rem;
 }
 
@@ -81,7 +81,7 @@ blockquote {
 text {
   font: 13px Open Sans;
   margin: auto;
-  fill: white;
+  fill: black;
 }
 
 .axis path,
@@ -164,13 +164,13 @@ function httpGetAsync(theUrl, callback) {
 
 function generate_chart(data) {
 
-  generate_bar(data, "shot_on_target")
-  generate_bar(data, "successful_pass")
-  generate_bar(data, "ctrl_ratio")
-  generate_bar(data, "tackle_won")
-  generate_bar(data, "save")
+  generate_bars(data, "shot_on_target")
+  generate_bars(data, "successful_pass")
+  generate_bars(data, "ctrl_ratio")
+  generate_bars(data, "tackle_won")
+  generate_bars(data, "save")
 
-  function generate_bar(data, bar_type) {
+  function generate_bars(data, bar_type) {
 
     data.sort(function(a, b) {
         return parseFloat(b[bar_type]) - parseFloat(a[bar_type]);
@@ -217,30 +217,77 @@ function generate_chart(data) {
         .attr("dy", ".70em");
 
 
-    var bar = chart.selectAll(".bar")
-        .data(data)
-      .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(" + (i + 0.17) * barWidth + ",0)"; })
-      .attr("width", barWidth)
-      // .append("group")
+    // var bar = chart.selectAll(".bar")
+    //     .data(data)
+    //   .enter().append("g")
+    //   .attr("transform", function(d, i) { return "translate(" + (i + 0.5) * barWidth + ",0)"; })
+    //   .attr("width", barWidth)
+    //   // .append("group")
 
-    bar.append("rect")
-        // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-        // .attr("x", function(d) { return x(d.team_name); })
-        .attr("y", function(d) { return y(d[bar_type]); })
-        .attr("height", function(d) { return height - y(d[bar_type]); })
-        .attr("width", barWidth * 0.66);
+    // bar.append("rect")
+    //     // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+    //     // .attr("x", function(d) { return x(d.team_name); })
+    //     .attr("y", function(d) { return y(d[bar_type]); })
+    //     .attr("height", function(d) { return height - y(d[bar_type]); })
+    //     .attr("width", barWidth * 0.33);
 
-    bar.append("text")
-        // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-        // .attr("x", function(d) { return x(d.team_name); })
-        .attr("y", function(d) { return y(d[bar_type]); })
-        .attr("transform", function(d, i) { return "translate(" + 0.33 * barWidth + ",0)"; })
-        .attr("height", function(d) { return height - y(d[bar_type]) + 9; })
+    // bar.append("text")
+    //     // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+    //     // .attr("x", function(d) { return x(d.team_name); })
+    //     .attr("y", function(d) { return y(d[bar_type]); })
+    //     .attr("transform", function(d, i) { return "translate(" + 0.33 * barWidth + ",0)"; })
+    //     .attr("height", function(d) { return height - y(d[bar_type]) + 9; })
+    //     .attr("width", barWidth)
+    //     .style("text-anchor", "middle")
+    //     .attr("dy", "1.2em")
+    //     .text(function(d) { return d[bar_type] });
+
+    switch (bar_type) {
+      case ("shot_on_target"):
+        generate_bar(2, 0, "goal");
+        generate_bar(2, 1, bar_type);
+        break;
+      case ("save"):
+        generate_bar(2, 0, "goal_against");
+        generate_bar(2, 1, bar_type);
+        break;
+      default:
+        generate_bar(1, 0, bar_type);
+        break;
+    }
+
+    
+
+    function generate_bar(n, j, stat_type) {
+      // barWidth = width / (data.length * n);
+
+      var bar = chart.selectAll(".bar" + j)
+          .data(data)
+        .enter().append("g")
+        .attr("transform", function(d, i) { return "translate(" + (i + 0.66/n * j + 0.17 ) * barWidth + ",0)"; })
         .attr("width", barWidth)
-        .style("text-anchor", "middle")
-        .attr("dy", "1.2em")
-        .text(function(d) { return d[bar_type] });
+        // .append("group")
+
+      bar.append("rect")
+          // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+          // .attr("x", function(d) { return x(d.team_name); })
+          .attr("y", function(d) { return y(d[stat_type]); })
+          .attr("height", function(d) { return height - y(d[stat_type]); })
+          .attr("width", barWidth * 0.66/n);
+
+      bar.append("text")
+          // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+          // .attr("x", function(d) { return x(d.team_name); })
+          .attr("y", function(d) { return y(d[stat_type]); })
+          .attr("transform", function(d, i) { return "translate(" + 0.33 * barWidth / n + ",0)"; })
+          .attr("height", function(d) { return height - y(d[stat_type]) + 9; })
+          .attr("width", barWidth)
+          .style("text-anchor", "middle")
+          .attr("dy", "1.2em")
+          .text(function(d) { return d[stat_type] });
+    }
+    
+
 
 
 
