@@ -11,7 +11,7 @@ body {
 .chart rect {
   /*fill: #CB1B45;*/
   /*fill: #113285;*/
-  fill: #005CAF;
+  /*fill: #005CAF;*/
 }
 
 blockquote {
@@ -200,6 +200,8 @@ function generate_chart(data) {
         height = width * 0.33
         barWidth = width / data.length;
 
+    var color = d3.scale.category20();
+
     var x = d3.scale.ordinal()
         .domain(data.map(function(d) { return d.team_name; }))
         .rangeRoundBands([0, width]);
@@ -284,6 +286,7 @@ function generate_chart(data) {
           // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
           // .attr("x", function(d) { return x(d.team_name); })
           .attr("y", function(d) { return y(d[stat_type]); })
+          .style("fill", function (d, i) { return color(j); })
           .attr("height", function(d) { return height - y(d[stat_type]); })
           .attr("width", barWidth * 0.66/n);
 
