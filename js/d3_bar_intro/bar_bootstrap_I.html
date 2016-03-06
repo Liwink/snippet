@@ -78,6 +78,12 @@ text {
   fill: black;
 }
 
+text.legend {
+  font: 11px Open Sans;
+  margin: auto;
+  fill: black;
+}
+
 .axis path,
 .axis line {
   fill: none;
@@ -145,6 +151,18 @@ text {
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
 
+translation_dic = {
+  "goal": "进球",
+  "shot_on_target": "射正",
+  "shot_off_target": "射偏",
+  "successful_pass": "传球成功",
+  "unsuccessful_pass": "传球失败",
+  "ctrl_ratio": "控球率",
+  "tackle_won": "抢断",
+  "save": "扑救",
+  "goal_against": "失球",
+}
+
 function httpGetAsync(theUrl, callback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
@@ -175,27 +193,34 @@ function generate_chart(data) {
         data.sort(function(a, b) {
             return parseFloat(b["goal"]) - parseFloat(a["goal"]);
         });
+        var maxCount = d3.max(data, function(d, i) {
+            return Math.max(d["shot_on_target"], d["shot_off_target"])
+        });
         break;
       case ("save"):
         data.sort(function(a, b) {
             return parseFloat(-b["goal_against"]) + parseFloat(a["goal_against"]);
+        });
+        var maxCount = d3.max(data, function(d, i) {
+            return Math.max(d["goal_against"], d["save"])
         });
         break;
       default:
         data.sort(function(a, b) {
             return parseFloat(b[bar_type]) - parseFloat(a[bar_type]);
         });
+        var maxCount = d3.max(data, function(d, i) {
+            return d[bar_type]
+        });
         break;
     }
 
-    var maxCount = d3.max(data, function(d, i) {
-        return d[bar_type]
-    });
+    
 
     // var w = document.getElementById("main").offsetWidth
     var w = document.getElementsByClassName("card")[0].offsetWidth
 
-    var margin = {top: 12, right: 60, bottom: 60, left: 60},
+    var margin = {top: 13, right: 60, bottom: 60, left: 60},
         width = w - margin.left - margin.right,
         height = width * 0.33
         barWidth = width / data.length;
@@ -230,43 +255,26 @@ function generate_chart(data) {
         .style("text-anchor", "start")
         .attr("dy", ".70em");
 
-
-    // var bar = chart.selectAll(".bar")
-    //     .data(data)
-    //   .enter().append("g")
-    //   .attr("transform", function(d, i) { return "translate(" + (i + 0.5) * barWidth + ",0)"; })
-    //   .attr("width", barWidth)
-    //   // .append("group")
-
-    // bar.append("rect")
-    //     // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-    //     // .attr("x", function(d) { return x(d.team_name); })
-    //     .attr("y", function(d) { return y(d[bar_type]); })
-    //     .attr("height", function(d) { return height - y(d[bar_type]); })
-    //     .attr("width", barWidth * 0.33);
-
-    // bar.append("text")
-    //     // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-    //     // .attr("x", function(d) { return x(d.team_name); })
-    //     .attr("y", function(d) { return y(d[bar_type]); })
-    //     .attr("transform", function(d, i) { return "translate(" + 0.33 * barWidth + ",0)"; })
-    //     .attr("height", function(d) { return height - y(d[bar_type]) + 9; })
-    //     .attr("width", barWidth)
-    //     .style("text-anchor", "middle")
-    //     .attr("dy", "1.2em")
-    //     .text(function(d) { return d[bar_type] });
-
     switch (bar_type) {
       case ("shot_on_target"):
-        generate_bar(2, 0, "goal");
-        generate_bar(2, 1, bar_type);
+        generate_bar(3, 0, "goal");
+        generate_bar(3, 1, bar_type);
+        generate_bar(3, 2, "shot_off_target");
+        generate_legend(["goal", bar_type, "shot_off_target"]);
         break;
       case ("save"):
         generate_bar(2, 0, "goal_against");
         generate_bar(2, 1, bar_type);
+        generate_legend(["goal_against", bar_type]);
+        break;
+      case ("successful_pass"):
+        generate_bar(2, 0, "successful_pass");
+        generate_bar(2, 1, "unsuccessful_pass");
+        generate_legend(["successful_pass", "unsuccessful_pass"]);
         break;
       default:
         generate_bar(1, 0, bar_type);
+        generate_legend([bar_type]);
         break;
     }
 
@@ -298,59 +306,44 @@ function generate_chart(data) {
           .attr("height", function(d) { return height - y(d[stat_type]) + 9; })
           .attr("width", barWidth)
           .style("text-anchor", "middle")
-          .attr("dy", "1.2em")
+          .attr("dy", "-.3em")
           .text(function(d) { return d[stat_type] });
     }
 
     // Draw legend
-    var legendRectSize = 18,
-        legendSpacing  = 4,
-        gapBetweenGroups = 10,
-        spaceForLabels   = 150,
-        spaceForLegend   = 150;
+    function generate_legend(types) {
+      var legendRectSize = 18,
+          legendSpacing  = 4,
+          gapBetweenGroups = 10,
+          spaceForLabels   = 150,
+          spaceForLegend   = 150;
 
-    var legend = chart.selectAll('.legend')
-        .data(["d", "p"])
-        .enter()
-        .append('g')
-        .attr('transform', function (d, i) {
-            var height = legendRectSize + legendSpacing;
-            var offset = -gapBetweenGroups/2;
-            var horz = width - spaceForLegend;
-            var vert = i * height - offset;
-            return 'translate(' + horz + ',' + vert + ')';
-        });
+      var legend = chart.selectAll('.legend')
+          .data(types)
+          .enter()
+          .append('g')
+          .attr('transform', function (d, i) {
+              var height = legendRectSize + legendSpacing;
+              var offset = -gapBetweenGroups/2;
+              var horz = width - spaceForLegend;
+              var vert = i * height - offset;
+              return 'translate(' + horz + ',' + vert + ')';
+          });
 
-    legend.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', function (d, i) { return color(i); })
-        .style('stroke', function (d, i) { return color(i); });
+      legend.append('rect')
+          .attr('width', legendRectSize)
+          .attr('height', legendRectSize)
+          .style('fill', function (d, i) { return color(i); })
+          .style('stroke', function (d, i) { return color(i); });
 
-    legend.append('text')
-        .attr('class', 'legend')
-        .attr('x', legendRectSize + legendSpacing)
-        .attr('y', legendRectSize - legendSpacing)
-        .text(function (d) { return d; });
+      legend.append('text')
+          .attr('class', 'legend')
+          .attr('x', legendRectSize + legendSpacing)
+          .attr('y', legendRectSize - legendSpacing)
+          .text(function (d) { return translation_dic[d]; });
 
+    }
     
-    
-
-
-
-
-    // function updateWindow(){
-    //     w = document.getElementsByClassName("middle")[0].offsetWidth
-    //     width = w - margin.left - margin.right;
-    //     barWidth = width / data.length;
-    //     chart = d3.select("." + bar_type)
-    //       .attr("width", width + margin.left + margin.right)
-    //     d3.selectAll("rect")
-    //       .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-    //       .attr("width", barWidth * 0.3);
-    //     // x.rangeRoundBands([0, width]);
-    // }
-    // window.onresize = updateWindow;
   }
 
 }
