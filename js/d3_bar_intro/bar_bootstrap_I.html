@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -17,7 +17,10 @@ body {
 blockquote {
     /*margin: 20px 0;*/
     /*padding-left: 1.5rem;*/
+    padding-left: 1rem;
+    /*padding-top: 5px;*/
     border-left: 5px solid #2196f3;
+    font-size: 24px;
 }
 
 .title {
@@ -53,7 +56,7 @@ blockquote {
 }
 
 .card {
-  max-width: 1000px;
+  max-width: 900px;
   margin: .1rem auto 1rem;
 }
 
@@ -97,53 +100,71 @@ text.legend {
 
 </style>
 
-<div class="row">
-  <div class="card col233">
-    <div class="title">
-      <span></span>
-      <strong>射中门框数</strong>
-    </div>
-    <svg class="chart shot_on_target"></svg>
-  </div>
-</div>
+<!-- <div class="row"> -->
 
-<div class="row">
-  <div class="card col233">
-    <div class="card-content">
-      <blockquote>传球成功</blockquote>
+  <!-- <div class="col-md-9"> -->
+    <div class="card col233">
+<!--       <div class="title">
+        <span></span>
+        <strong>射门</strong>
+      </div> -->
+      <div class="card-content">
+        <blockquote>射门</blockquote>
+      </div>
+      <svg class="chart shot_on_target"></svg>
     </div>
-    <div class=""><svg class="chart successful_pass"></svg></div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="card col233">
-    <div class="card-content">
-      <blockquote>控球率</blockquote>
+
+    <div class="card col233">
+      <div class="card-content">
+        <blockquote>传球</blockquote>
+      </div>
+      <div class=""><svg class="chart successful_pass"></svg></div>
     </div>
-    <div class=""><svg class="chart ctrl_ratio "></svg></div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="card col233">
-    <div class="card-content">
-      <blockquote>抢断</blockquote>
+    <div class="card col233">
+      <div class="card-content">
+        <blockquote>控球</blockquote>
+      </div>
+      <div class=""><svg class="chart ctrl_ratio "></svg></div>
     </div>
-    <div class=""><svg class="chart tackle_won "></svg></div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="card col233">
-    <div class="card-content">
-      <blockquote>扑救</blockquote>
+    <div class="card col233">
+      <div class="card-content">
+        <blockquote>抢断</blockquote>
+      </div>
+      <div class=""><svg class="chart tackle_won "></svg></div>
     </div>
-    <div class=""><svg class="chart save "></svg></div>
-  </div>
-</div>
 
-</div>
+    <div class="card col233">
+      <div class="card-content">
+        <blockquote>扑救</blockquote>
+      </div>
+      <div class=""><svg class="chart save "></svg></div>
+    </div>
+  <!-- </div> -->
+
+<!--   <div class="col-md-3">
+    <div class="card col233">
+      <div class="card-content">
+        <blockquote>射门</blockquote>
+      </div>
+      <div class="card-content">
+        <blockquote>传球</blockquote>
+      </div>
+      <div class="card-content">
+        <blockquote>控球</blockquote>
+      </div>
+      <div class="card-content">
+        <blockquote>抢断</blockquote>
+      </div>
+      <div class="card-content">
+        <blockquote>扑救</blockquote>
+      </div>
+    </div>
+  </div> -->
+
+<!-- </div> -->
 
 
 
@@ -225,6 +246,8 @@ function generate_chart(data) {
         height = width * 0.33
         barWidth = width / data.length;
 
+    window.selected = 0
+
     var color = d3.scale.category20();
 
     var x = d3.scale.ordinal()
@@ -294,9 +317,12 @@ function generate_chart(data) {
           // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
           // .attr("x", function(d) { return x(d.team_name); })
           .attr("y", function(d) { return y(d[stat_type]); })
+          .attr("name", function(d) { return d["team_name"] })
+          .attr("class", "bar")
           .style("fill", function (d, i) { return color(j); })
           .attr("height", function(d) { return height - y(d[stat_type]); })
-          .attr("width", barWidth * 0.66/n);
+          .attr("width", barWidth * 0.66/n)
+          .on({"click": changeOpacityByName});
 
       bar.append("text")
           // .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
@@ -308,6 +334,34 @@ function generate_chart(data) {
           .style("text-anchor", "middle")
           .attr("dy", "-.3em")
           .text(function(d) { return d[stat_type] });
+
+
+      function changeOpacityByName(name) {
+        name = this.getAttribute("name")
+        // selected = 0
+
+        all = document.getElementsByClassName("bar")
+        elements = document.getElementsByName(name)
+
+        if (elements[0].style.opacity == 1 && window.selected == 1) {
+          for (var i=0, max=all.length; i < max; i++) {
+               all[i].style.opacity = 1
+          }
+          window.selected = 0
+        }
+        else {
+          for (var i=0, max=all.length; i < max; i++) {
+               all[i].style.opacity = 0.3
+          }
+          for (var i=0, max=elements.length; i < max; i++) {
+               elements[i].style.opacity = 1
+          }
+          window.selected = 1
+        }
+        
+      }
+
+      // bar.on("click", console.log("lalala"))
     }
 
     // Draw legend
@@ -343,6 +397,8 @@ function generate_chart(data) {
           .text(function (d) { return translation_dic[d]; });
 
     }
+
+    // document.getElementsByClassName("rect").on("click", console.log("on click"))
     
   }
 
