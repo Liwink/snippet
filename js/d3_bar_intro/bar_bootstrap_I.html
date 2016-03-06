@@ -4,14 +4,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
+body {
+  background-color: #f7f7f7;
+}
+
 .chart rect {
-  fill: steelblue;
+  /*fill: #CB1B45;*/
+  /*fill: #113285;*/
+  fill: #005CAF;
+}
+
+blockquote {
+    /*margin: 20px 0;*/
+    /*padding-left: 1.5rem;*/
+    border-left: 5px solid #2196f3;
+}
+
+.title {
+    color: #515151;
+    font-size: 18px;
+    margin: 30px 25px 20px 25px;
+}
+
+.title span {
+    display: inline-block;
+    background-color: #1c90f2;
+    width: 5px;
+    height: 24px;
+    margin-right: 10px;
+    margin-bottom: -5px;
+}
+
+.col233 {
+  background-color: #FFFFFB
+}
+
+.col234 {
+  background-color: #FFFFFF
+}
+
+.col235 {
+  background-color: #BDC0BA;
 }
 
 .middle {
-  width: 800px;
+  max-width: 800px;
   margin: auto;
 }
+
+.card {
+  max-width: 800px;
+  margin: .1rem auto 1rem;
+}
+
+.card-content {
+    padding: 20px;
+    border-radius: 0 0 2px 2px;
+}
+
+.stat_description {
+  font-family: Open Sans;
+  color: #CB1B45;
+}
+
+
 
 /*.chart text {
   fill: white;
@@ -36,23 +92,56 @@
 
 </style>
 
-<div class="middle">
-  <svg class="chart shot_on_target"></svg>
+<div class="row">
+  <div class="card col233">
+    <div class="title">
+      <span></span>
+      <strong>射中门框数</strong>
+    </div>
+    <svg class="chart shot_on_target"></svg>
+  </div>
 </div>
 
 <div class="row">
-  <div class="col-md-6"><svg class="chart successful_pass"></svg></div>
+  <div class="card col233">
+    <div class="card-content">
+      <blockquote>传球成功</blockquote>
+    </div>
+    <div class=""><svg class="chart successful_pass"></svg></div>
+  </div>
 </div>
+
 <div class="row">
-  <div class="col-md-6"><svg class="chart ctrl_ratio"></svg></div>
+  <div class="card col233">
+    <div class="card-content">
+      <blockquote>控球率</blockquote>
+    </div>
+    <div class=""><svg class="chart ctrl_ratio "></svg></div>
+  </div>
 </div>
+
 <div class="row">
-  <div class="col-md-6"><svg class="chart tackle_won"></svg></div>
+  <div class="card col233">
+    <div class="card-content">
+      <blockquote>抢断</blockquote>
+    </div>
+    <div class=""><svg class="chart tackle_won "></svg></div>
+  </div>
 </div>
+
 <div class="row">
-  <div><svg class="chart save"></svg></div>
+  <div class="card col233">
+    <div class="card-content">
+      <blockquote>扑救</blockquote>
+    </div>
+    <div class=""><svg class="chart save "></svg></div>
+  </div>
 </div>
+
 </div>
+
+
+
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
@@ -77,14 +166,19 @@ function generate_chart(data) {
   generate_bar(data, "save")
 
   function generate_bar(data, bar_type) {
+
+    data.sort(function(a, b) {
+        return parseFloat(b[bar_type]) - parseFloat(a[bar_type]);
+    });
+
     var maxCount = d3.max(data, function(d, i) {
         return d[bar_type]
     });
 
     // var w = document.getElementById("main").offsetWidth
-    var w = document.getElementsByClassName("middle")[0].offsetWidth
+    var w = document.getElementsByClassName("card")[0].offsetWidth
 
-    var margin = {top: 20, right: 30, bottom: 60, left: 40},
+    var margin = {top: 00, right: 60, bottom: 60, left: 60},
         width = w - margin.left - margin.right,
         height = width * 0.25
         barWidth = width / data.length;
@@ -105,7 +199,7 @@ function generate_chart(data) {
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     chart.append("g")
         .attr("class", "x axis")
@@ -123,23 +217,23 @@ function generate_chart(data) {
       .enter().append("rect")
         .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
         // .attr("x", function(d) { return x(d.team_name); })
-        .attr("y", function(d) { return y(d[bar_type]); })
+        .attr("y", function(d) { console.log(y(d[bar_type])); return y(d[bar_type]); })
         .attr("height", function(d) { return height - y(d[bar_type]); })
-        .attr("width", barWidth * 0.3);
+        .attr("width", barWidth * 0.67);
 
 
-    function updateWindow(){
-        w = document.getElementById("main").offsetWidth;
-        width = w - margin.left - margin.right;
-        barWidth = width / data.length;
-        chart = d3.select("." + bar_type)
-          .attr("width", width + margin.left + margin.right)
-        d3.selectAll("rect")
-          .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
-          .attr("width", barWidth * 0.3);
-        // x.rangeRoundBands([0, width]);
-    }
-    window.onresize = updateWindow;
+    // function updateWindow(){
+    //     w = document.getElementsByClassName("middle")[0].offsetWidth
+    //     width = w - margin.left - margin.right;
+    //     barWidth = width / data.length;
+    //     chart = d3.select("." + bar_type)
+    //       .attr("width", width + margin.left + margin.right)
+    //     d3.selectAll("rect")
+    //       .attr("transform", function(d, i) { return "translate(" + i * barWidth + ",0)"; })
+    //       .attr("width", barWidth * 0.3);
+    //     // x.rangeRoundBands([0, width]);
+    // }
+    // window.onresize = updateWindow;
   }
 
 }
