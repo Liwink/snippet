@@ -56,9 +56,17 @@ blockquote {
   margin: auto;
 }
 
+.nav-card {
+  width: 200px;
+  margin: 2rem auto 1rem;
+  position: fixed;
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+}
+
 .card {
   max-width: 900px;
-  margin: .1rem auto 2rem;
+  margin: 2rem auto .1rem;
   background-color: white;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
 }
@@ -77,6 +85,19 @@ blockquote {
   font: 10px sans-serif;
   fill: black;
 }
+
+td>a {
+  /*display: inline-block;*/
+  padding-top: 3px;
+  padding-left: 50px;
+  padding-right: 60px;
+  padding-bottom: 3px
+}
+
+td>a:hover {
+ text-decoration: none;
+}
+
 
 text {
   /*font: 13px Open Sans;*/
@@ -103,68 +124,77 @@ text.legend {
 
 </style>
 
-<div id="wrapper">
+<div class="row">
 
-  <div id="sidebar-wrapper">
-    <ul class="sidebar-nav">
-      <li class="sidebar-brand">
-          <a href="#">
-            球队数据
-          </a>
-      </li>
-      <li>
-          <a href="#射门">射门</a>
-      </li>
-      <li>
-          <a href="#传球">传球</a>
-      </li>
-      <li>
-          <a href="#控球">控球</a>
-      </li>
-      <li>
-          <a href="#抢断">抢断</a>
-      </li>
-      <li>
-          <a href="#扑救">扑救</a>
-      </li>
-    </ul>
-  </div>
-
-  <div id="page-content-wrapper">
-    <div class="card ">
+  <div class="col-md-9">
+    <div class="card"  id="射门">
       <div class="card-content">
-        <blockquote id="射门">射门</blockquote>
+        <blockquote>射门</blockquote>
       </div>
       <svg class="chart shot_on_target"></svg>
     </div>
 
-
-    <div class="card ">
+    <div class="card" id="传球">
       <div class="card-content">
-        <blockquote id="传球">传球</blockquote>
+        <blockquote >传球</blockquote>
       </div>
       <div class=""><svg class="chart successful_pass"></svg></div>
     </div>
 
-    <div class="card ">
+    <div class="card" id="控球">
       <div class="card-content">
-        <blockquote id="控球">控球</blockquote>
+        <blockquote >控球</blockquote>
       </div>
       <div class=""><svg class="chart ctrl_ratio "></svg></div>
     </div>
 
-    <div class="card ">
+    <div class="card" id="抢断">
       <div class="card-content">
-        <blockquote id="抢断">抢断</blockquote>
+        <blockquote >抢断</blockquote>
       </div>
       <div class=""><svg class="chart tackle_won "></svg></div>
     </div>
 
-    <div class="card ">
+    <div class="card" id="扑救">
       <div class="card-content">
-        <blockquote id="扑救">扑救</blockquote>
+        <blockquote >扑救</blockquote>
       </div>
       <div class=""><svg class="chart save "></svg></div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="nav-card">
+      <div class="card-content">
+        <table class="table table-hover">
+          <tr>
+            <td>
+              <a href="#射门">射门</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#传球">传球</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#控球">控球</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#抢断">抢断</a>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <a href="#扑救">扑救</a>
+            </td>
+          </tr>
+        </table>
+
+      </div>
     </div>
   </div>
 
