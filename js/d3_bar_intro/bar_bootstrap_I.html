@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link href="simple-sidebar.css" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -100,12 +101,37 @@ text.legend {
 
 </style>
 
-<div class="row">
+<div id="wrapper">
 
-  <div class="col-md-9">
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+          <a href="#">
+            球队数据
+          </a>
+      </li>
+      <li>
+          <a href="#射门">射门</a>
+      </li>
+      <li>
+          <a href="#传球">传球</a>
+      </li>
+      <li>
+          <a href="#控球">控球</a>
+      </li>
+      <li>
+          <a href="#抢断">抢断</a>
+      </li>
+      <li>
+          <a href="#扑救">扑救</a>
+      </li>
+    </ul>
+  </div>
+
+  <div id="page-content-wrapper">
     <div class="card col233">
       <div class="card-content">
-        <blockquote>射门</blockquote>
+        <blockquote id="射门">射门</blockquote>
       </div>
       <svg class="chart shot_on_target"></svg>
     </div>
@@ -113,40 +139,34 @@ text.legend {
 
     <div class="card col233">
       <div class="card-content">
-        <blockquote>传球</blockquote>
+        <blockquote id="传球">传球</blockquote>
       </div>
       <div class=""><svg class="chart successful_pass"></svg></div>
     </div>
 
     <div class="card col233">
       <div class="card-content">
-        <blockquote>控球</blockquote>
+        <blockquote id="控球">控球</blockquote>
       </div>
       <div class=""><svg class="chart ctrl_ratio "></svg></div>
     </div>
 
     <div class="card col233">
       <div class="card-content">
-        <blockquote>抢断</blockquote>
+        <blockquote id="抢断">抢断</blockquote>
       </div>
       <div class=""><svg class="chart tackle_won "></svg></div>
     </div>
 
     <div class="card col233">
       <div class="card-content">
-        <blockquote>扑救</blockquote>
+        <blockquote id="扑救">扑救</blockquote>
       </div>
       <div class=""><svg class="chart save "></svg></div>
     </div>
   </div>
 
-  <div class="col-md-3">
-    <nav class="navbar navbar-left">
-      <ul>
-        <li>liuyihe</li>
-      </ul>
-    </nav> 
-  </div>
+  
 
 </div>
 
