@@ -76,7 +76,7 @@ blockquote {
 }
 
 text {
-  font: 13px Open Sans;
+  /*font: 13px Open Sans;*/
   margin: auto;
   fill: black;
 }
@@ -225,7 +225,7 @@ function generate_chart(data) {
     // var w = document.getElementById("main").offsetWidth
     var w = document.getElementsByClassName("card")[0].offsetWidth
 
-    var margin = {top: 13, right: 60, bottom: 60, left: 60},
+    var margin = {top: 14, right: 60, bottom: 60, left: 60},
         width = w - margin.left - margin.right,
         height = width * 0.33
         barWidth = width / data.length;
@@ -317,6 +317,7 @@ function generate_chart(data) {
           .attr("height", function(d) { return height - y(d[stat_type]) + 9; })
           .attr("width", barWidth)
           .style("text-anchor", "middle")
+          .style("font", (16 - 2 * n) + "px Open Sans")
           .attr("dy", "-.3em")
           .text(function(d) { return d[stat_type] });
 
