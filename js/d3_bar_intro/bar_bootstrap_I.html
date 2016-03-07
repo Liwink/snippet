@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<!-- <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -100,14 +100,10 @@ text.legend {
 
 </style>
 
-<!-- <div class="row"> -->
+<div class="row">
 
-  <!-- <div class="col-md-9"> -->
+  <div class="col-md-9">
     <div class="card col233">
-<!--       <div class="title">
-        <span></span>
-        <strong>射门</strong>
-      </div> -->
       <div class="card-content">
         <blockquote>射门</blockquote>
       </div>
@@ -142,29 +138,17 @@ text.legend {
       </div>
       <div class=""><svg class="chart save "></svg></div>
     </div>
-  <!-- </div> -->
+  </div>
 
-<!--   <div class="col-md-3">
-    <div class="card col233">
-      <div class="card-content">
-        <blockquote>射门</blockquote>
-      </div>
-      <div class="card-content">
-        <blockquote>传球</blockquote>
-      </div>
-      <div class="card-content">
-        <blockquote>控球</blockquote>
-      </div>
-      <div class="card-content">
-        <blockquote>抢断</blockquote>
-      </div>
-      <div class="card-content">
-        <blockquote>扑救</blockquote>
-      </div>
-    </div>
-  </div> -->
+  <div class="col-md-3">
+    <nav class="navbar navbar-left">
+      <ul>
+        <li>liuyihe</li>
+      </ul>
+    </nav> 
+  </div>
 
-<!-- </div> -->
+</div>
 
 
 
@@ -322,6 +306,7 @@ function generate_chart(data) {
           .style("fill", function (d, i) { return color(j); })
           .attr("height", function(d) { return height - y(d[stat_type]); })
           .attr("width", barWidth * 0.66/n)
+          .style("cursor", "pointer")
           .on({"click": changeOpacityByName});
 
       bar.append("text")
