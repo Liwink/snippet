@@ -1,0 +1,142 @@
+body {
+  background-color: #f7f7f7;
+}
+
+.chart rect {
+  /*fill: #CB1B45;*/
+  /*fill: #113285;*/
+  /*fill: #005CAF;*/
+}
+
+blockquote {
+    /*margin: 20px 0;*/
+    /*padding-left: 1.5rem;*/
+    padding-left: 1rem;
+    /*padding-top: 5px;*/
+    border-left: 5px solid #2196f3;
+    font-size: 24px;
+}
+
+.title {
+    color: #515151;
+    font-size: 18px;
+    margin: 30px 25px 20px 25px;
+}
+
+.title span {
+    display: inline-block;
+    background-color: #1c90f2;
+    width: 5px;
+    height: 24px;
+    margin-right: 10px;
+    margin-bottom: -5px;
+}
+
+.col233 {
+  background-color: #FFFFFB
+}
+
+.col234 {
+  background-color: #FFFFFF
+}
+
+.col235 {
+  background-color: #BDC0BA;
+}
+
+.middle {
+  max-width: 800px;
+  margin: auto;
+}
+
+.nav-card {
+  width: 250px;
+  margin: 1rem auto .1rem;
+  top: 80px;
+  position: fixed;
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+.card {
+  max-width: 900px;
+  min-width: 600px;
+  margin: 1rem auto 1rem;
+  background-color: white;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
+}
+
+.card-content {
+    padding: 20px;
+    border-radius: 0 0 2px 2px;
+}
+
+.stat_description {
+  font-family: Open Sans;
+  color: #CB1B45;
+}
+
+.axis text {
+  font: 10px sans-serif;
+  fill: black;
+}
+
+td>a {
+  /*display: inline-block;*/
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 80px;
+  padding-bottom: 10px;
+  color: black;
+}
+
+td>a:hover {
+ text-decoration: none;
+}
+
+
+text {
+  /*font: 13px Open Sans;*/
+  margin: auto;
+  fill: black;
+}
+
+text.legend {
+  font: 11px Open Sans;
+  margin: auto;
+  fill: black;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.competition-page {
+  position: fixed;
+  /*margin: 0 auto;*/
+  /*vertical-align: middle;*/
+  width: 100%;
+  background-color: white;
+  z-index: 100;
+}
+
+.competition-logo {
+  /*vertical-align: middle;*/
+  /*margin: 0 auto;*/
+  padding-left: 30px;
+  position: relative;
+  /*display: inline-block;*/
+  width: 500px;
+}
+
+.text-main {
+  position: relative;
+  top: 80px;
+}
