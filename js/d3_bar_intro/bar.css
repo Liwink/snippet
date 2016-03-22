@@ -2,6 +2,36 @@ body {
   background-color: #f7f7f7;
 }
 
+.jumbotron {
+  height: 400px;
+  width: 100%;
+  background-image: linear-gradient(to right,#42c9a1,#195d9d);
+  position: fixed;
+  z-index: 0;
+  text-align: center;
+}
+
+.jumbotron .text {
+    font-family: 'Microsoft YaHei';
+    font-size: 38px;
+    color: white;
+    line-height: 45px;
+    font-weight: 400;
+    margin: 1pc auto;
+    padding: 0 18px;
+}
+
+.jumbotron .text .event {
+    font-size: 30px;
+}
+
+.text-main {
+  position: relative;
+  top: 400px;
+  background-color: #f7f7f7;
+  /*top: 80px;*/
+}
+
 .chart rect {
   /*fill: #CB1B45;*/
   /*fill: #113285;*/
@@ -56,9 +86,9 @@ blockquote {
 
 .nav-card {
   width: 250px;
-  margin: 1rem auto .1rem;
-  top: 80px;
-  position: fixed;
+  /*margin: 1rem auto .1rem;*/
+  top: 10px;
+  position: relative;
   background-color: white;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12);
 }
@@ -139,9 +169,4 @@ text.legend {
   position: relative;
   /*display: inline-block;*/
   width: 500px;
-}
-
-.text-main {
-  position: relative;
-  top: 80px;
 }

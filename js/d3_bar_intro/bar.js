@@ -10,6 +10,21 @@ translation_dic = {
   "goal_against": "失球",
 }
 
+window.onscroll = scroll;
+
+function scroll() {
+  if( window.pageYOffset > 320) {
+    navCard = document.getElementsByClassName("nav-card")
+    navCard[0].style.position = 'fixed'
+    navCard[0].style.top = '80px'
+  }
+  else {
+    navCard = document.getElementsByClassName("nav-card")
+    navCard[0].style.position = 'relative'
+    navCard[0].style.top = '10px'
+  }
+}
+
 function httpGetAsync(theUrl, callback) {
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
