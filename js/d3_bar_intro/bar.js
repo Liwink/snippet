@@ -13,7 +13,7 @@ translation_dic = {
 window.onscroll = scroll;
 
 function scroll() {
-  if( window.pageYOffset > 320) {
+  if( window.pageYOffset > 330) {
     navCard = document.getElementsByClassName("nav-card")
     navCard[0].style.position = 'fixed'
     navCard[0].style.top = '80px'

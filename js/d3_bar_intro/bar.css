@@ -8,13 +8,13 @@ body {
   background-image: linear-gradient(to right,#42c9a1,#195d9d);
   position: fixed;
   z-index: 0;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .jumbotron .text {
-    font-family: 'Microsoft YaHei';
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
     font-size: 38px;
-    color: white;
+    color: #F5F5F5;
     line-height: 45px;
     font-weight: 400;
     margin: 1pc auto;
@@ -23,6 +23,18 @@ body {
 
 .jumbotron .text .event {
     font-size: 30px;
+    width: 49%;
+    display: inline-block;
+    text-align: left;
+    border-left: 3px solid #F5F5F5;
+    padding-left: 1rem;
+}
+
+.jumbotron .text .number {
+    font-size: 38px;
+    width: 50%;
+    display: inline-block;
+    text-align: right;
 }
 
 .text-main {
