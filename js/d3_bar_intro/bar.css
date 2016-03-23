@@ -21,6 +21,52 @@ body {
     padding: 0 18px;
 }
 
+.jumbotron .stats {
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 38px;
+    color: #F5F5F5;
+    line-height: 45px;
+    font-weight: 400;
+    margin: 1pc auto;
+    padding: 0 18px;
+    width: 70%;
+}
+
+.jumbotron .logo {
+    font-family: Helvetica Neue,Helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    color: #F5F5F5;
+    line-height: 45px;
+    font-weight: 400;
+    margin: 3pc auto;
+    padding: 5 18px;
+    width: 70%;
+    text-align: center;
+}
+
+.jumbotron .logo-chinese {
+    font-size: 6vw;
+    font-family: Helvetica Neue,Helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    color: #F5F5F5;
+    line-height: 45px;
+    font-weight: 400;
+    margin: 4pc auto 1pc;
+    padding: 5 18px;
+    width: 70%;
+    text-align: center;
+}
+
+.jumbotron .loge-english {
+    font-size: 4vw;
+    font-family: Helvetica Neue,Helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    color: #F5F5F5;
+    line-height: 45px;
+    font-weight: 400;
+    margin: 2pc auto 3pc;
+    padding: 5 18px;
+    width: 70%;
+    text-align: center;
+}
+
 .jumbotron .text .event {
     font-size: 30px;
     width: 49%;
@@ -35,6 +81,20 @@ body {
     width: 50%;
     display: inline-block;
     text-align: right;
+}
+
+.jumbotron .stats .number1 {
+    font-size: 30px;
+    width: 19%;
+    display: inline-block;
+    text-align: center;
+}
+
+.jumbotron .stats .event {
+    font-size: 26px;
+    width: 50%;
+    border-top: 1px solid white;
+    margin: 0 auto;
 }
 
 .text-main {
