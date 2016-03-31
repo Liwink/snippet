@@ -4,7 +4,7 @@
 __author__ = 'Liwink'
 
 """
-Coroutines are tasks
+Coroutines are tasks (?In concurrent programming, one typically subdivides problem into "task"
 
 Tasks have a few essential features
 * Independent control flow
