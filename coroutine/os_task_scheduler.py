@@ -3,6 +3,8 @@
 
 __author__ = 'Liwink'
 
+import Queue
+
 
 class Task:
     taskid = 0
@@ -18,21 +20,21 @@ class Task:
 
 
 class Scheduler:
-    task_list = []
+    def __init__(self):
+        self.ready = Queue()
 
     def new(self, task):
         pass
 
-    def process(self):
+    def mainloop(self):
         while True:
-            task = Scheduler.task_list.pop()
+            task = self.ready.get()
             task.run()
-            Scheduler.task_list.append(task)
+            self.ready.put(task)
+
 
 def foo():
     print("Part 1")
     yield
     print("Part 2")
     yield
-
-
