@@ -41,26 +41,55 @@ class Scheduler:
             task = self.ready.get()
             try:
                 result = task.run()
+                if isinstance(result, SystemCall):
+                    # the environment information
+                    result.task = task
+                    result.sched = self
+                    result.handle()
+                    continue
             except StopIteration:
                 self.exit(task)
                 continue
             self.schedule(task)
 
 
+class SystemCall:
+    """
+    - In a real operating system, traps are how application programs
+    request the services of the operation system
+    - In our code, the scheduler is the operating system and the yield
+    statement is a trap
+    - To request the service of the scheduler, tasks will use the yield
+    statement with a value
+    """
+
+    def handle(self):
+        pass
+
+
+class GetTid(SystemCall):
+    def handle(self):
+        self.task.sendval = self.task.tid
+        self.sched.schedule(self.task)
+
+
 def foo():
+    # yield, send
+    mytid = yield GetTid()
     for i in range(10):
-        print("I'm foo")
+        print("I'm foo", mytid)
         yield
 
 
 def bar():
+    mytid = yield GetTid()
     for i in range(10):
-        print("I'm bar")
+        print("I'm bar", mytid)
         yield
+
 
 if __name__ == "__main__":
     s = Scheduler()
     s.new(foo())
     s.new(bar())
     s.mainloop()
-
