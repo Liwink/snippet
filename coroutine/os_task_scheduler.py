@@ -3,7 +3,7 @@
 
 __author__ = 'Liwink'
 
-import Queue
+import queue
 
 
 class Task:
@@ -12,7 +12,7 @@ class Task:
     def __init__(self, target):
         Task.taskid += 1
         self.tid = Task.taskid
-        self.target = target
+        self.target = target()
         self.sendval = None
 
     def run(self):
@@ -21,7 +21,7 @@ class Task:
 
 class Scheduler:
     def __init__(self):
-        self.ready = Queue()
+        self.ready = queue.Queue()
         self.taskmap = {}
 
     def new(self, target):
