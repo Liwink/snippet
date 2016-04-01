@@ -12,7 +12,7 @@ class Task:
     def __init__(self, target):
         Task.taskid += 1
         self.tid = Task.taskid
-        self.target = target()
+        self.target = target
         self.sendval = None
 
     def run(self):
@@ -32,15 +32,35 @@ class Scheduler:
     def schedule(self, task):
         self.ready.put(task)
 
+    def exit(self, task):
+        print("Task {0} terminated.".format(task.target.__name__))
+        del self.taskmap[task.tid]
+
     def mainloop(self):
         while self.taskmap:
             task = self.ready.get()
-            task.run()
+            try:
+                result = task.run()
+            except StopIteration:
+                self.exit(task)
+                continue
             self.schedule(task)
 
 
 def foo():
-    print("Part 1")
-    yield
-    print("Part 2")
-    yield
+    for i in range(10):
+        print("I'm foo")
+        yield
+
+
+def bar():
+    for i in range(10):
+        print("I'm bar")
+        yield
+
+if __name__ == "__main__":
+    s = Scheduler()
+    s.new(foo())
+    s.new(bar())
+    s.mainloop()
+
