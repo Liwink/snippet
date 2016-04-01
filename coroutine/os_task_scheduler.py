@@ -27,13 +27,16 @@ class Scheduler:
     def new(self, target):
         newtask = Task(target)
         self.taskmap[newtask.tid] = newtask
-        self.ready.put(newtask)
+        self.schedule(newtask)
+
+    def schedule(self, task):
+        self.ready.put(task)
 
     def mainloop(self):
         while self.taskmap:
             task = self.ready.get()
             task.run()
-            self.ready.put(task)
+            self.schedule(task)
 
 
 def foo():
