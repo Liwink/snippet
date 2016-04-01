@@ -22,12 +22,15 @@ class Task:
 class Scheduler:
     def __init__(self):
         self.ready = Queue()
+        self.taskmap = {}
 
-    def new(self, task):
-        pass
+    def new(self, target):
+        newtask = Task(target)
+        self.taskmap[newtask.tid] = newtask
+        self.ready.put(newtask)
 
     def mainloop(self):
-        while True:
+        while self.taskmap:
             task = self.ready.get()
             task.run()
             self.ready.put(task)
