@@ -1,5 +1,6 @@
 # Connecting to Redis
 from redis import Redis
+
 redis = Redis()
 
 # The Configuration
@@ -9,11 +10,12 @@ app.config['REDIS_QUEUE_KEY'] = 'my_queue'
 from flask import current_app
 from pickle import loads, dumps
 
+
 class DelayedResult(object):
     def __init__(self, key):
         self.key = key
         self._rv = None
-        
+
     @property
     def return_value(self):
         if self._rv is None:
@@ -21,17 +23,19 @@ class DelayedResult(object):
             if rv is not None:
                 self._rv = loads(rv)
         return self._rv
-        
+
 
 def queuefunc(f):
     def delay(*args, **kwargs):
         qkey = current_app.config['REDIS_QUEUE_KEY']
-        key = "{0}:result:{1}".format(qkey, stry(uuid4()))
+        key = "{0}:result:{1}".format(qkey, str(uuid4()))
         s = dumps((f, key, args, kwargs))
         redis.rpush(current_app.config['REDIS_QUEUE_KEY '], s)
         return DelayedResult(key)
+
     f.delay = delay
     return f
+
 
 # The Queue Runner
 def queue_daemon(app, rv_ttl=500):
@@ -40,19 +44,22 @@ def queue_daemon(app, rv_ttl=500):
         func, key, args, kwargs = loads(msg[1])
         try:
             rv = func(*args, **kwargs)
-        except Exception, e:
+        except Exception as e:
             rv = e
         if rv is not None:
             redis.set(key, dumps(rv))
             redis.expire(key, rv_ttl)
 
+
 # run the daemon
 queue_daemon(app)
+
 
 # Running Functions through the Queue
 @queuefunc
 def add(a, b):
     return a + b
+
 
 """
 1. 用 Redis 实现队列，消息中转

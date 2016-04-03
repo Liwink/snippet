@@ -3,11 +3,10 @@
 
 __author__ = 'Liwink'
 
+import tornado.gen
 import tornado.httpserver
-import tornado.ioloop
-import tornado.options
+import tornado.concurrent
 import tornado.web
-import tornado.httpclient
 
 import time
 
@@ -17,9 +16,19 @@ define("port", default=8888, help="run on the give port", type=int)
 
 
 class SleepHandler(tornado.web.RequestHandler):
+    @tornado.gen.coroutine
     def get(self, *args, **kwargs):
-        time.sleep(0.5)
+        yield self.task()
         self.write("when i sleep 5s")
+
+    @tornado.concurrent.return_future
+    def task(self, callback=None):
+        print("1" * 8)
+        # yield tornado.gen.Task(print, 5)
+        time.sleep(0.5)
+        callback(None)
+        print("2" * 8)
+
 
 
 class JustNowHandler(tornado.web.RequestHandler):
