@@ -11,6 +11,9 @@ __author__ = 'Liwink'
 """
 
 """
+
+# tornado queues return Future
+
 >>> from tornado import queues
 >>> q = queues.Queue()
 >>> q.get()
