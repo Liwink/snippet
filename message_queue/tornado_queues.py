@@ -19,4 +19,3 @@ __author__ = 'Liwink'
 >>> q.get()
 <tornado.concurrent.Future at 0x10ef62d30>
 """
-

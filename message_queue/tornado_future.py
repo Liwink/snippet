@@ -4,6 +4,8 @@
 __author__ = 'Liwink'
 
 """
+Most asynchronous functions in Tornado return a Future; yielding this object returns its result.
+
 http://stackoverflow.com/questions/27043076/tornado-coroutine
 
 The `tornado.coroutine` decorator requires that you yield only `Future`
