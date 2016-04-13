@@ -12,6 +12,10 @@ from tornado.ioloop import IOLoop
 from tornado.gen import Return
 
 
+def coroutine(func, replace_callback=True):
+    return _make_coroutine_wrapper(func, replace_callback=True)
+
+
 def _make_coroutine_wrapper(func, replace_callback):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -87,5 +91,3 @@ class Runner(object):
 
             if not self.handle_yield(yielded):
                 return
-
-
