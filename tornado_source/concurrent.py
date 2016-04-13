@@ -3,6 +3,16 @@
 
 __author__ = 'Liwink'
 
+"""Utilities for working with threads and ``Futures``.
+
+``Futures`` are a pattern for concurrent programming introduced in
+Python 3.2 in the `concurrent.futures` package (this package has also
+been backported to older versions of Python and can be installed with
+``pip install futures``).  Tornado will use `concurrent.futures.Future` if
+it is available; otherwise it will use a compatible class defined in this
+module.
+"""
+
 
 class Future(object):
     """
