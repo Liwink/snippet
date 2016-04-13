@@ -87,6 +87,8 @@ class Runner(object):
             self.future = None
 
             value = future.result()
+
+            # Task done and send result to main 'process'
             yielded = self.gen.send(value)
 
             if not self.handle_yield(yielded):
