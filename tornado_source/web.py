@@ -36,6 +36,12 @@ class Application:
             if spec.name:
                 self.named_handlers[spec.name] = spec
 
+    def _get_host_handlers(self, request):
+        host = request.host.lower().split(":")[0]
+        for pattern, handlers in self.handlers:
+            if pattern.match(host):
+                return handlers
+
     def listen(self, port, address="", **kwargs):
         from tornado.httpserver import HTTPServer
         server = HTTPServer(self, **kwargs)
@@ -109,7 +115,8 @@ class _RequestDispatcher:
             self.execute()
 
     def execute(self):
-        pass
+        f = self.handler._execute()
+        return self.handler._prepared_future
 
 
 class URLSpec:
