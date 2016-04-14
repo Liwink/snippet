@@ -5,6 +5,20 @@ __author__ = 'Liwink'
 
 import re
 from .concurrent import Future
+from .gen import coroutine
+
+
+class RequestHandler:
+    @coroutine
+    def _execute(self, *args, **kwargs):
+        self.path_args = [self.decode_argument(arg) for arg in args]
+        self.path_kwargs = dict((k, self.decode_argument(v, name=k))
+                                for (k, v) in kwargs.items())
+
+        method = getattr(self, self.request.method.lower())
+        result = method(*self.path_args, **self.path_kwargs)
+
+        self.finish()
 
 
 class Application:
