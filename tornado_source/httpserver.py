@@ -48,8 +48,42 @@ class HTTPServer:
         while True:
             connection, address = self._socket.accept()
             stream = iostream.IOStream(connection, io_loop=self.io_loop)
+            # not clear, just create a object
+            # ( create -> 'read_until' -> callback
             HTTPConnection(stream, address, self.request_callback,
                            self.no_keep_alive, self.xheaders)
 
 
+class HTTPConnection:
+    """Handles a connection to an HTTP client, executing HTTP requests.
 
+    We parse HTTP headers and bodies, and execute the request callback
+    until the HTTP connection is closed.
+
+    """
+    def __init__(self, stream, address, request_callback, no_keep_alive=False,
+                 xheaders=False):
+        self.stream = stream
+        self.address = address
+        self.request_callback = request_callback
+        self.no_keep_alive = no_keep_alive
+        self.xheaders = xheaders
+        self._request = None
+        self._request_finished = False
+        # TODO: \r\n\r\n ?
+        self.stream.read_until("\r\n\r\n", self._on_headers)
+
+    def _on_headers(self, data):
+        eol = data.find("\r\n")
+        start_line = data[:eol]
+        method, uri, version = start_line.splite(" ")
+        headers = httputil.HTTPHeaders.parse(data[eol:])
+        self._request = HTTPRequest(
+            connection=self, method=method, uri=uri, version=version,
+            headers=headers, remote_ip=self.address[0]
+        )
+        content_length = headers.get("Content-Length")
+        # following not good, should be one method
+        if content_length:
+            self.stream.read_bytes(int(content_length), self._on_request_body)
+        self.request_callback(self._request)
