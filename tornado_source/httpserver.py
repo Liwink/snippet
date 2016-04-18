@@ -4,6 +4,7 @@
 __author__ = 'Liwink'
 
 import socket
+import time
 
 
 class HTTPServer:
@@ -48,7 +49,7 @@ class HTTPServer:
         while True:
             connection, address = self._socket.accept()
             stream = iostream.IOStream(connection, io_loop=self.io_loop)
-            # not clear, just create a object
+            # not explicitly, just create a object
             # ( create -> 'read_until' -> callback
             HTTPConnection(stream, address, self.request_callback,
                            self.no_keep_alive, self.xheaders)
@@ -61,6 +62,7 @@ class HTTPConnection:
     until the HTTP connection is closed.
 
     """
+
     def __init__(self, stream, address, request_callback, no_keep_alive=False,
                  xheaders=False):
         self.stream = stream
@@ -87,3 +89,19 @@ class HTTPConnection:
         if content_length:
             self.stream.read_bytes(int(content_length), self._on_request_body)
         self.request_callback(self._request)
+
+
+class HTTPRequest:
+    def __init__(self, method, uri, version="HTTP/1.0", headers=None,
+                 body=None, remote_ip=None, protocol=None, host=None,
+                 files=None, connection=None):
+        self.method = method
+        self.uri = uri
+        self.version = version
+        self.headers = headers
+        self.body = body or ""
+        self.host = host or self.headers.get("Host") or "127.0.0.1"
+        self.files = files or {}
+        self.connection = connection
+        self._start_time = time.time()
+        self._finish_time = None

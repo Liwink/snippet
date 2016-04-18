@@ -64,6 +64,12 @@ class Application:
     def start_request(self, server_conn, request_conn):
         return _RequestDispatcher(self, request_conn)
 
+    def __call__(self, request):
+        # Legacy HTTPServe interface
+        dispatcher = _RequestDispatcher(self, None)
+        dispatcher.set_request(request)
+        return dispatcher.execute()
+
 
 class _RequestDispatcher:
     def __init__(self, application, connection):
