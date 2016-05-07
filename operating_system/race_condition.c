@@ -9,7 +9,7 @@ mythread(void *arg)
     printf("%s: begin\n", (char *) arg);
     int i;
     for (i = 0; i < 1e7; i++) {
-        counter = counter + 1;
+        ++counter;
         // counter += counter
     }
     printf("%s: done\n", (char *) arg);
