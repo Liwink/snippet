@@ -15,15 +15,15 @@ void init(counter_t *c) {
 void increment(counter_t *c) {
     pthread_mutex_lock(&c->lock);
     c->value++;
-    pthread_mutex_unlock(&c-lock);
+    pthread_mutex_unlock(&c->lock);
 }
 
 void *
-mythread(counter_t, *c)
+mythread(counter_t *c)
 {
     int i;
     for (i = 0; i < 1e3; i++) {
-        increment(c)
+        increment(c);
     }
     return NULL;
 }
@@ -32,15 +32,15 @@ int
 main(int argc, char *argv[])
 {
     pthread_t p1, p2;
-    printf("main: begin (counter = %d)\n", counter);
     counter_t c;
-    init(c)
-    pthread_create(&p1, NULL, mythread, c);
-    pthread_create(&p2, NULL, mythread, c);
+    init(&c);
+    printf("main: begin (counter = %d)\n", c.value);
+    pthread_create(&p1, NULL, mythread, &c);
+    pthread_create(&p2, NULL, mythread, &c);
 
     pthread_join(p1, NULL);
     pthread_join(p2, NULL);
-    printf("main: done with both (counter = %d)\n", counter);
+    printf("main: done with both (counter = %d)\n", c.value);
     return 0;
 
 }
