@@ -42,7 +42,7 @@ void *consumer(void *arg) {
         int tmp = get();
         pthread_cond_signal(&cond);
         pthread_mutex_unlock(&mutex);
-        printf("%d\n", tmp);
+        printf("%s: %d\n", (char *) arg, tmp);
     }
 }
 
@@ -50,11 +50,14 @@ int
 main(int argc, char *argv[]) {
     pthread_t p1;
     pthread_t p2;
+    pthread_t p3;
 
     pthread_create(&p1, NULL, producer, &argc);
-    pthread_create(&p2, NULL, consumer, &argc);
+    pthread_create(&p2, NULL, consumer, "A");
+    pthread_create(&p3, NULL, consumer, "B");
     pthread_join(p1, NULL);
     pthread_join(p2, NULL);
+    pthread_join(p3, NULL);
     printf("End");
     return 0;
 }
