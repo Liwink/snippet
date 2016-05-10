@@ -38,6 +38,7 @@ void *consumer(void *arg) {
     for (i = 0; i < 10; i++) {
         pthread_mutex_lock(&mutex);
         while (count == 0)
+            // printf("%s waked.", (char *) arg);
             pthread_cond_wait(&cond, &mutex);
         int tmp = get();
         pthread_cond_signal(&cond);
