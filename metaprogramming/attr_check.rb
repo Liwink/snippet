@@ -1,5 +1,5 @@
-class C
-  def self.attr_check attr, &check
+module CheckedAttributes
+  def attr_check attr, &check
     define_method attr do
       self.instance_variable_get("@#{attr}")
     end
@@ -7,6 +7,11 @@ class C
       self.instance_variable_set("@#{attr}", (check.call(var)? var : nil))
     end
   end
+
+end
+
+class C
+  extend CheckedAttributes
 
   attr_check :var do
     |v| v>= 10
